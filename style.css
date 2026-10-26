@@ -1,0 +1,634 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Quicksand', 'Noto Serif SC', sans-serif;
+    background-color: #fff9f9;
+    color: #4a4a4a;
+    line-height: 1.6;
+}
+
+.music-control {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    cursor: pointer;
+    z-index: 1000;
+    font-size: 14px;
+    transition: transform 0.2s;
+}
+.music-control:hover {
+    transform: scale(1.05);
+}
+
+.hero {
+    background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+    color: white;
+    text-align: center;
+    padding: 80px 20px 60px;
+}
+
+.badge {
+    background: rgba(255, 255, 255, 0.3);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    margin: 20px 0 10px;
+    font-family: 'Noto Serif SC', serif;
+}
+
+.subtitle {
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+    opacity: 0.9;
+}
+
+.timer-card {
+    background: white;
+    color: #333;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(255, 105, 135, 0.2);
+}
+
+.timer-card h3 {
+    margin-bottom: 15px;
+    color: #ff6b81;
+}
+
+.time-digits {
+    display: flex;
+    justify-content: space-around;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+}
+
+.time-digits strong {
+    font-size: 1.8rem;
+    color: #ff4757;
+    display: block;
+}
+
+.timer-start-date {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+/* ==================== 刮刮乐卡片区域 ==================== */
+.scratch-section {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.scratch-tip {
+    color: #ff6b81;
+    font-size: 0.95rem;
+    margin-bottom: 25px;
+}
+
+.scratch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+    justify-content: center;
+}
+
+/* 刮刮卡主容器：必须设置 relative 才能让 canvas 盖在上面 */
+.scratch-card {
+    position: relative;
+    width: 260px; /* 固定宽度，配合居中网格更完美 */
+    height: 320px;
+    margin: 0 auto; /* 保证在手机端单列排布时也是居中的 */
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(255, 107, 129, 0.15);
+    background: #fff;
+    touch-action: none;
+}
+
+/* 底层的照片与文字内容 */
+.scratch-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    box-sizing: border-box;
+}
+
+.scratch-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.scratch-text {
+    margin-top: 10px;
+}
+
+.scratch-text h4 {
+    margin: 0;
+    color: #ff4757;
+    font-size: 1.1rem;
+}
+
+.scratch-text p {
+    margin: 5px 0 0 0;
+    font-size: 0.85rem;
+    color: #777;
+}
+
+/* 关键！盖在最上层的 Canvas 涂层 */
+.scratch-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5; /* 确保涂层在最上面 */
+    cursor: pointer;
+}
+
+/* 解锁区域 */
+.hidden-section {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 1.2s ease-in-out;
+    pointer-events: none;
+}
+
+.unlocked {
+    opacity: 1 !important;
+    max-height: 5000px !important;
+    pointer-events: auto !important;
+}
+
+.unlock-banner {
+    text-align: center;
+    background: #ff6b81;
+    color: white;
+    padding: 15px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-radius: 30px;
+    max-width: 500px;
+    margin: 40px auto 20px;
+    box-shadow: 0 4px 15px rgba(255, 107, 129, 0.4);
+    animation: bounce 1s infinite alternate;
+}
+
+@keyframes bounce {
+    from { transform: translateY(0); }
+    to { transform: translateY(-8px); }
+}
+
+/* 时间轴 */
+.timeline-section {
+    max-width: 800px;
+    margin: 60px auto;
+    padding: 0 20px;
+}
+
+.timeline {
+    position: relative;
+    border-left: 3px solid #ffccd5;
+    margin-left: 20px;
+    padding-left: 30px;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 40px;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: -38px;
+    top: 0;
+    width: 16px;
+    height: 16px;
+    background: #ff4757;
+    border: 3px solid white;
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px #ffccd5;
+}
+
+.timeline-content {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.timeline-content .date {
+    font-size: 0.85rem;
+    color: #ff6b81;
+    font-weight: 600;
+}
+
+.timeline-content h3 {
+    margin: 8px 0;
+    font-size: 1.2rem;
+}
+
+/* 默契问答区 */
+.quiz-section {
+    max-width: 650px;
+    margin: 60px auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.quiz-card {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+}
+
+.quiz-card h3 {
+    color: #333;
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.quiz-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.quiz-opt-btn {
+    background: #fff0f3;
+    border: 2px solid #ffccd5;
+    color: #ff4757;
+    padding: 12px 20px;
+    border-radius: 12px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.quiz-opt-btn:hover {
+    background: #ff4757;
+    color: white;
+    border-color: #ff4757;
+}
+
+.quiz-feedback {
+    margin-top: 15px;
+    font-weight: bold;
+    min-height: 24px;
+}
+
+.quiz-feedback.correct { color: #2ed573; }
+.quiz-feedback.wrong { color: #ff4757; }
+
+.hidden-element {
+    display: none;
+}
+
+/* 情书区 */
+.letter-section {
+    max-width: 700px;
+    margin: 60px auto;
+    padding: 0 20px;
+}
+
+.letter-card {
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.06);
+    position: relative;
+    border-top: 5px solid #ff4757;
+}
+
+.letter-card p {
+    margin-bottom: 15px;
+    line-height: 1.8;
+}
+
+.sign-off {
+    text-align: right;
+    font-weight: 600;
+    color: #ff4757;
+    margin-top: 25px;
+}
+
+/* 逃跑按钮表白区 */
+.proposal-section {
+    max-width: 600px;
+    margin: 80px auto 100px;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.proposal-card {
+    background: linear-gradient(135deg, #fff0f3 0%, #ffe3e8 100%);
+    padding: 40px 20px;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(255, 71, 87, 0.15);
+    position: relative;
+    min-height: 240px;
+}
+
+.proposal-card h2 {
+    color: #ff4757;
+    margin-bottom: 10px;
+}
+
+.proposal-text {
+    font-size: 1.2rem;
+    color: #444;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+.proposal-btn-group {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    position: relative;
+    height: 60px;
+}
+
+.btn-yes {
+    background: #ff4757;
+    color: white;
+    border: none;
+    padding: 12px 35px;
+    font-size: 1.1rem;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+    transition: transform 0.2s;
+}
+
+.btn-yes:hover {
+    transform: scale(1.1);
+}
+
+.btn-no {
+    background: #a4b0be;
+    color: white;
+    border: none;
+    padding: 12px 35px;
+    font-size: 1.1rem;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: bold;
+    position: absolute;
+    transition: all 0.15s ease-out;
+}
+
+/* 放大预览 Modal */
+.image-modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.85);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.modal-content-img {
+    max-width: 90%;
+    max-height: 80vh;
+    border-radius: 12px;
+    box-shadow: 0 0 20px rgba(255,255,255,0.2);
+}
+
+.modal-caption {
+    color: white;
+    margin-top: 15px;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.modal-close {
+    position: absolute;
+    top: 25px;
+    right: 35px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* 甜蜜弹窗 */
+.sweet-alert-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 3000;
+    justify-content: center;
+    align-items: center;
+}
+
+.sweet-alert-box {
+    background: white;
+    padding: 40px 30px;
+    border-radius: 24px;
+    text-align: center;
+    max-width: 400px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.heart-icon {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+.sweet-alert-box h3 {
+    color: #ff4757;
+    margin-bottom: 10px;
+}
+
+.sweet-alert-box p {
+    color: #666;
+    margin-bottom: 25px;
+    font-size: 0.95rem;
+}
+
+.btn-alert-close {
+    background: #ff4757;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+@keyframes popIn {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+footer {
+    text-align: center;
+    padding: 30px;
+    background: #f8f9fa;
+    color: #888;
+    font-size: 0.9rem;
+}
+
+/* 拍立得照片墙样式 */
+.photo-wall-section {
+    max-width: 900px;
+    margin: 60px auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.photo-wall-section h2 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: #ff4757;
+    font-family: 'Noto Serif SC', serif;
+}
+
+.wall-sub {
+    font-size: 0.95rem;
+    color: #ff6b81;
+    margin-bottom: 40px;
+}
+
+.photo-wall-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 30px;
+    justify-content: center;
+}
+
+/* 拍立得卡片骨架 */
+.polaroid-item {
+    background: white;
+    padding: 12px 12px 25px 12px;
+    border-radius: 4px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+/* 做出那种随性倾斜贴在墙上的艺术感 */
+.polaroid-item:nth-child(odd) {
+    transform: rotate(-2deg);
+}
+.polaroid-item:nth-child(even) {
+    transform: rotate(2deg);
+}
+
+.polaroid-item:hover {
+    transform: scale(1.05) rotate(0deg) !important;
+    box-shadow: 0 12px 30px rgba(255, 71, 87, 0.2);
+    z-index: 10;
+}
+
+.polaroid-item img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 2px;
+    cursor: zoom-in;
+    background-color: #f1f2f6;
+}
+
+.polaroid-caption {
+    margin-top: 15px;
+    font-family: 'Noto Serif SC', serif;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+/* 浮动音乐按钮样式 */
+.music-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 8px 15px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #ff4757;
+    z-index: 9999;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 71, 87, 0.3);
+    font-family: 'Noto Serif SC', serif;
+}
+
+.music-btn:hover {
+    transform: scale(1.1);
+    background: #ff4757;
+    color: white;
+}
+
+/* 梦幻爱心与星星闪烁特效样式 */
+.magic-element {
+    position: fixed;
+    top: -20px;
+    pointer-events: none;
+    animation: fallAndSparkle linear infinite;
+    z-index: 1; /* 在底层，不遮挡文字和照片 */
+    opacity: 0;
+}
+
+@keyframes fallAndSparkle {
+    0% {
+        transform: translateY(0) scale(0.5) rotate(0deg);
+        opacity: 0;
+    }
+    20% {
+        opacity: 0.8;
+    }
+    80% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(105vh) scale(1.2) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* 专门调整中间第二张刮刮卡的图片，让头发完整露出来 */
+.scratch-grid .scratch-card:nth-child(2) .scratch-img {
+    height: 220px;            /* 稍微拉高一点图片高度 */
+    object-position: top 10%;  /* 调整图片视角，向下滑动展示顶部头发 */
+}

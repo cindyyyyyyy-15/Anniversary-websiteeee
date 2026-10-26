@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our 2nd Anniversary ❤️</title>
+    <!-- 引入谷歌字体 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- 背景音乐控制按钮 -->
+<div id="musicToggle" class="music-btn" title="点击播放/暂停音乐">
+    💖 <span id="musicText">播放《玻璃》</span>
+</div>
+
+<!-- 隐藏原生播放条，只保留功能（把 controls 去掉，页面就干净啦） -->
+<audio id="bgMusic" loop>
+    <source src="music.mp3.mp3" type="audio/mp3">
+</audio>
+
+    <!-- 顶部主视觉区与恋爱计时器 -->
+    <header class="hero">
+        <div class="hero-content">
+            <span class="badge">Happy 2nd Anniversary🥰</span>
+            <h1>Our Sweet Journey</h1>
+            <p class="subtitle">谢谢你陪我走过的每一天，未来的路我们继续并肩同行。😘</p>
+            
+            <div class="timer-card">
+                <h3>我们在一起已经度过了</h3>
+                <div class="time-digits" id="loveTimer">
+                    <span><strong id="years">0</strong> 年</span>
+                    <span><strong id="days">0</strong> 天</span>
+                    <span><strong id="hours">0</strong> 小时</span>
+                    <span><strong id="minutes">0</strong> 分</span>
+                    <span><strong id="seconds">0</strong> 秒</span>
+                </div>
+                <p class="timer-start-date">相恋于：2025年2月24日</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- 第一关：恋爱刮刮乐 -->
+    <section class="scratch-section">
+        <h2>✨ 第一关：刮开我们的两周年惊喜</h2>
+        <p class="scratch-tip">💡 动动手指/鼠标，把 3 张卡片都刮开，就能解锁后面的甜蜜回忆哦！</p>
+
+        <div class="scratch-grid">
+            <!-- 刮刮卡 1 -->
+            <div class="scratch-card">
+                <div class="scratch-content">
+                    <!-- 确保图片名字是 p1.jpg (根据你的实际后缀修改) -->
+                    <img src="p1.jpg.jpeg" alt="照片1" class="scratch-img zoomable">
+                    <div class="scratch-text">
+                        <h4>初次心动</h4>
+                        <p>故事开始的地方 ❤️</p>
+                    </div>
+                </div>
+                <canvas class="scratch-canvas"></canvas>
+            </div>
+
+            <!-- 刮刮卡 2 -->
+            <div class="scratch-card">
+                <div class="scratch-content">
+                    <img src="p2.jpg.jpeg" alt="照片2" class="scratch-img zoomable">
+                    <div class="scratch-text">
+                        <h4>最甜的瞬间</h4>
+                        <p>有你的每一天都闪闪发光！</p>
+                    </div>
+                </div>
+                <canvas class="scratch-canvas"></canvas>
+            </div>
+
+            <!-- 刮刮卡 3 -->
+            <div class="scratch-card">
+                <div class="scratch-content">
+                    <img src="p3.jpg.jpeg" alt="照片3" class="scratch-img zoomable">
+                    <div class="scratch-text">
+                        <h4>未完待续...</h4>
+                        <p>两周年快乐 🥂</p>
+                    </div>
+                </div>
+                <canvas class="scratch-canvas"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 解锁后才会显示的隐藏区域 ==================== -->
+    <div id="lockedSection" class="hidden-section">
+        
+        <div class="unlock-banner">🎉 恭喜通关！往下滑查看我们的甜蜜足迹 👇</div>
+
+        <!-- 我们的回忆时间轴 -->
+        <section class="timeline-section">
+            <h2>✨ 我们的甜蜜足迹</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="date">2025.2.24</span>
+                        <h3>初次相遇 / 确立关系</h3>
+                        <p>那是故事开始的地方，从此我的世界多了一个温暖的名字。</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="date">第一周年</span>
+                        <h3>手牵手走过365天</h3>
+                        <p>一起吃过的美食、走过的路，都成了最珍贵的闪光回忆。</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-content">
+                        <span class="date">今天（两周年）</span>
+                        <h3>爱意正浓，未来可期</h3>
+                        <p>两周年快乐呀！谢谢你一直以来的陪伴与偏爱。</p>
+                    </div>
+                </div>
+            </div>
+        </section>            
+             
+        <!-- 第二关：默契问答小测试 -->
+        <section class="quiz-section">
+            <h2>🧩 第二关：我们的两周年默契问答</h2>
+            <p class="quiz-sub">答对才能拿到最后的独家情书哦！</p>
+            <div class="quiz-card">
+                <h3 id="quizQuestion">问题加载中...</h3>
+                <div class="quiz-options" id="quizOptions"></div>
+                <p class="quiz-feedback" id="quizFeedback"></p>
+            </div>
+        </section>
+
+        <!-- 情书区 -->
+        <section class="letter-section hidden-element" id="letterSection">
+            <h2>💌 写给男朋友的话</h2>
+            <div class="letter-card">
+                <p>亲爱的：</p>
+                <p>时间过得真快，转眼我们已经一起走过两周年了。谢谢你在日常中给予我的陪伴与照顾，有你的日子里，连平凡的每一天都变得闪闪发光。希望接下来的日子里，我们继续携手创造更多美好的回忆！</p>
+                <p class="sign-off">爱你的女朋友 ❤️</p>
+            </div>
+        </section>
+
+        <!-- 第三关：逃跑按钮表白互动 -->
+        <section class="proposal-section">
+            <div class="proposal-card">
+                <h2>❤️ 终极考核</h2>
+                <p class="proposal-text">今天也要继续做我的男朋友吗？</p>
+                <div class="proposal-btn-group">
+                    <button class="btn-yes" id="yesBtn">好呀 ❤️</button>
+                    <button class="btn-no" id="noBtn">才不要 😜</button>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- 拍立得照片墙 -->
+    <section class="photo-wall-section">
+        <h2>📸 我们的拍立得照片墙</h2>
+        <p class="wall-sub">每一张，都是我们走过的独家记忆</p>
+        
+        <div class="photo-wall-grid">
+            <!-- 新照片 1 -->
+            <div class="polaroid-item">
+                <img src="p4.jpg.jpeg" alt="甜蜜瞬间 1" class="zoomable">
+                <p class="polaroid-caption">一起去参观动物园~💖很热但是happy😆因为有你在🩷</p>
+            </div>
+            <!-- 新照片 2 -->
+            <div class="polaroid-item">
+                <img src="p5.jpg.jpeg" alt="甜蜜瞬间 2" class="zoomable">
+                <p class="polaroid-caption">一起看日落~✨虽然看不成😜这就说明老天要我们再去一次哈哈哈😳</p>
+            </div>
+            <!-- 新照片 3 -->
+            <div class="polaroid-item">
+                <img src="p6.jpg.jpeg" alt="甜蜜瞬间 3" class="zoomable">
+                <p class="polaroid-caption">去看你打球~🏀支持你，是你背后的女人🌟</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 拍立得大图预览 Modal (唯一保留一份) -->
+    <div class="image-modal" id="imageModal">
+        <span class="modal-close" id="modalClose">&times;</span>
+        <img class="modal-content-img" id="modalImg" alt="大图展示">
+        <div class="modal-caption" id="modalCaption"></div>
+    </div>
+
+    <!-- 甜蜜成功弹窗 -->
+    <div class="sweet-alert-overlay" id="sweetAlert">
+        <div class="sweet-alert-box">
+            <div class="heart-icon">💖</div>
+            <h3>获得女朋友的永久爱意！</h3>
+            <p>两周年快乐！往后的每一个三周年、四周年……也要一直在一起哦！</p>
+            <button class="btn-alert-close" id="closeAlertBtn">收到！么么哒 😘</button>
+        </div>
+    </div>
+
+    <!-- 页脚版权 -->
+    <footer>
+        <p>Made with ❤️ for Our 2nd Anniversary</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
